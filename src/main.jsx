@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import InterPage from "./pages/internpage.jsx";
 import AdminPage from "./pages/admin.jsx";
 import StaffPage from "./pages/staffpage.jsx";
-import SignUpPage from "./pages/signup.jsx";
+import SignUpPage from "./pages/Signup.jsx";
 import LoginPage from "./pages/loginpage.jsx";
 
 import "./index.css";
