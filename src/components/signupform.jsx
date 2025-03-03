@@ -25,7 +25,7 @@ const SignUpForm = () => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const response = await axios.post('http://localhost:3000/signup', formData);
+      const response = await axios.post('https://tsm-2d9v.onrender.com/signup', formData);
       if (response.data.success) {
         setIsSuccess(true);
         setMessage('Signup successful! Admin will review your application soon.');
