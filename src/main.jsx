@@ -1,13 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import SignUpPage from "./pages/signup";
-import LoginPage from "./pages/loginpage";
+import SignUpPage from "./pages/signup.jsx";
+import LoginPage from "./pages/loginpage.jsx";
 
 import "./index.css";
-import InterPage from "./pages/internpage";
-import AdminPage from "./pages/admin";
-import StaffPage from "./pages/staffpage";
+import InterPage from "./pages/internpage.jsx";
+import AdminPage from "./pages/admin.jsx";
+import StaffPage from "./pages/staffpage.jsx";
 
 
 ReactDOM.createRoot(document.getElementById("root")).render(
