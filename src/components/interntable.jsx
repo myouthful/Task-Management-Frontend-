@@ -33,7 +33,7 @@ export default function BasicTable({ email }) {
 
   const handleSubmitTask = async (taskId) => {
     try {
-      const response = await axios.post('`https://tsm-2d9v.onrender.com/submittask', {
+      const response = await axios.post('https://tsm-2d9v.onrender.com/submittask', {
         email: email,
         taskId: taskId,
         taskdone: true
