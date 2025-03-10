@@ -28,7 +28,7 @@ function TaskForm() {
         const fetchTeamMembers = async () => {
             try {
                 const response = await axios.post('https://tsm-2d9v.onrender.com/fetchteam', {
-                    dept: user.team, // Use selected department instead of user.department
+                    dept: user.department, // Use selected department instead of user.department
                     email: user.email
                 });
                 console.log('Server response:', response.data)
