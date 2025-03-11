@@ -15,4 +15,4 @@ export default generateTaskId;
 //import generateTaskId from '../utility/taskid';
 
 // Usage example
-//const newTaskId = generateTaskId(); // Returns something like "TSK4567"
+// const newTaskId = generateTaskId(); // Returns something like "TSK4567"

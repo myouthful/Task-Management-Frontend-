@@ -8,8 +8,9 @@ export default {
     extend: {
       fontFamily: {
         'montserrat': ['Montserrat', 'sans-serif'],
+        'emblema': ["Emblema One", 'sans-serif']
       },
-    },
+    }
   },
   plugins: [],
 }

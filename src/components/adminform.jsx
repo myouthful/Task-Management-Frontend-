@@ -61,13 +61,13 @@ function AdminForm() {
     return (
         <div className="w-full max-w-4xl p-6">
             <table className="min-w-full divide-y divide-gray-200">
-                <thead>
+                <thead className="bg-blue-600">
                     <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                        <th className="px-6 border py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Name</th>
+                        <th className="px-6 border py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Email</th>
+                        <th className="px-6 border py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Role</th>
+                        <th className="px-6 border py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Department</th>
+                        <th className="px-6 border py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Action</th>
                     </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
@@ -120,7 +120,7 @@ function UserRow({ user, roles, departments, onAssign, loading }) {
                     onChange={(e) => setSelectedDept(e.target.value)}
                     className="mt-1 p-2 font-montserrat text-[15px] border rounded-md"
                 >
-                    <option value="" className='font-montserrat text-[15px]'>Select Department</option>
+                    <option value="" className='font-montserrat text-[14px]'>Select Department</option>
                     {departments.map(dept => (
                         <option key={dept} value={dept}>{dept}</option>
                     ))}
@@ -131,7 +131,7 @@ function UserRow({ user, roles, departments, onAssign, loading }) {
                     onClick={() => onAssign(user.email, selectedRole, selectedDept)}
                     disabled={loading}
                     className={`py-2 px-4 font-montserrat text-[15px] text-white rounded-md ${
-                        loading ? 'bg-blue-300 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
+                        loading ? 'bg-blue-300 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-600'
                     }`}
                 >
                     {loading ? 'Assigning...' : 'Assign'}

@@ -45,18 +45,18 @@ function ChangeUserRole() {
         <div className="w-full max-w-4xl p-6">
             <form onSubmit={handleSubmit}>
                 <table className="min-w-full divide-y divide-gray-200">
-                    <thead>
+                    <thead className="bg-blue-600">
                         <tr>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th className="px-6 py-3 border text-left text-xs font-medium text-white uppercase tracking-wider">
                                 Role
                             </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th className="px-6 py-3 border text-left text-xs font-medium text-white uppercase tracking-wider">
                                 Department
                             </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th className="px-6 py-3 border text-left text-xs font-medium text-white uppercase tracking-wider">
                                 Email
                             </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th className="px-6 py-3 border text-left text-xs font-medium text-white uppercase tracking-wider">
                                 Action
                             </th>
                         </tr>
@@ -98,12 +98,12 @@ function ChangeUserRole() {
                                     className="mt-1 p-2 border rounded-md w-full"
                                 />
                             </td>
-                            <td className="px-6 py-4 font-montserrat text-[15px] whitespace-nowrap">
+                            <td className="px-6 py-4 font-montserrat text-[14px] whitespace-nowrap">
                                 <button
                                     type="submit"
                                     disabled={loading}
                                     className={`py-2 px-4 text-white rounded-md ${
-                                        loading ? 'bg-blue-300 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
+                                        loading ? 'bg-blue-300 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-600'
                                     }`}
                                 >
                                     {loading ? 'Submitting...' : 'Submit'}
