@@ -13,6 +13,8 @@ export default function BasicTable({ email }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const userData = JSON.parse(localStorage.getItem('user')) || {};
+
   const fetchTasks = async () => {
     try {
       const response = await axios.get(`https://tsm-2d9v.onrender.com/internlog?email=${email}`);
@@ -33,10 +35,12 @@ export default function BasicTable({ email }) {
 
   const handleSubmitTask = async (taskId) => {
     try {
+      const fullName = `${userData.firstname} ${userData.lastname}`;
       const response = await axios.post('https://tsm-2d9v.onrender.com/submittask', {
         email: email,
         taskId: taskId,
-        taskdone: true
+        taskdone: true,
+        name: fullName // Add the concatenated name to request body
       });
 
       if (response.data.success) {
@@ -49,6 +53,7 @@ export default function BasicTable({ email }) {
     }
   };
 
+  
   if (loading) return <div>Loading tasks...</div>;
   if (error) return <div>{error}</div>;
 

@@ -23,7 +23,7 @@ function InterPage() {
     return(
         <div className="flex-col flex gap-5">
             <Header />
-            <p className="w-full mt-2 pl-[45px] font-medium text-gray-900 text-[19px]">
+            <p className="w-full mt-[120px] pl-[45px] font-medium text-gray-900 text-[19px]">
                 Welcome, {user.firstname} {user.lastname}
             </p>
             <div className="flex px-7 mt-2 ">

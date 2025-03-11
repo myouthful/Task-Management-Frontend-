@@ -1,231 +1,243 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import generateTaskId from '../utility/taskid';
+
+const userData = JSON.parse(localStorage.getItem('user')) || {};
 
 function TaskForm() {
-    const navigate = useNavigate();
-    const [formData, setFormData] = useState({
-        date: '',
-        taskdescription: '',
-        taskName: '',
-        dueDate: '',
-        assignedTo: [],
-        dept: '',
-        taskStatus: 'Pending'
-    });
 
-    const [tasks, setTasks] = useState([]); // Ensure tasks array exists
-    const [teamMembers, setTeamMembers] = useState([]);
+    const [tasks, setTasks] = useState([{
+        taskId: generateTaskId(),
+        taskName: '',
+        taskDescription: '',
+        dept: '',
+        assignTo: [],
+        assigneeEmails: [],
+        dueDate: '',
+       taskcreator: `${userData.firstname} ${userData.lastname}`
+    }]);
+    const [deptUsers, setDeptUsers] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    // Get user data from localStorage
-    const user = JSON.parse(localStorage.getItem('user'));
+    const departments = ['AOF', 'PDE', 'IDP'];
 
-
-    const departments = ['AOF', 'IDP', 'PDE'];
-
-    useEffect(() => {
-        const fetchTeamMembers = async () => {
-
-            if (!formData.dept) return; // Prevent API call if no department is selected
-
-            try {
-                const response = await axios.post('https://tsm-2d9v.onrender.com/fetchteam', {
-                    dept: formData.dept, // Fetch based on selected department
-                    email: user?.email
-                });
-
-                if (response.data.success) {
-                    const emails = response.data.team.map(member => member.email);
-                    setTeamMembers(emails);
-                }
-            } catch (err) {
-                setError('Failed to fetch team members');
-                console.error('Error fetching team members:', err);
+    const fetchDepartmentUsers = async (dept, taskIndex) => {
+        try {
+            const response = await axios.post('https://tsm-2d9v.onrender.com/namefetch', { dept });
+            if (response.data.success) {
+                setDeptUsers(response.data.users);
             }
-        };
-
-        fetchTeamMembers();
-    }, [formData.dept]);
-
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: value,
-            ...(name === 'dept' ? { assignedTo: [] } : {}) // Reset assignedTo when department changes
-        }));
+        } catch (err) {
+            setError('Failed to fetch department users');
+            console.error('Error:', err);
+        }
     };
 
-    const handleAssigneeChange = (e) => {
-        const selectedEmails = Array.from(e.target.selectedOptions, option => option.value);
-        setFormData(prev => ({
-            ...prev,
+    const handleDepartmentChange = async (e, index) => {
+        const { value } = e.target;
+        const updatedTasks = [...tasks];
+        updatedTasks[index].dept = value;
+        updatedTasks[index].assignTo = [];
+        updatedTasks[index].assigneeEmails = [];
+        setTasks(updatedTasks);
+        if (value) {
+            await fetchDepartmentUsers(value);
+        }
+    };
 
-            assignedTo: selectedEmails
-        }));
+    const handleAssigneeChange = (e, index) => {
+        const selectedOptions = Array.from(e.target.selectedOptions);
+        const selectedNames = selectedOptions.map(option => option.getAttribute('data-name'));
+        const selectedEmails = selectedOptions.map(option => option.value);
+
+        const updatedTasks = [...tasks];
+        updatedTasks[index].assignTo = selectedNames;
+        updatedTasks[index].assigneeEmails = selectedEmails;
+        setTasks(updatedTasks);
     };
 
     const addTaskRow = () => {
-        setTasks([...tasks, { date: '', taskName: '', taskdescription: '', assignedTo: '', taskStatus: 'Pending' }]);
+        setTasks([...tasks, {
+            taskId: generateTaskId(),
+            taskName: '',
+            taskDescription: '',
+            dept: '',
+            assignTo: [],
+            assigneeEmails: [],
+            dueDate: '',
+            taskcreator: `${userData.firstname} ${userData.lastname}`
+        }]);
     };
 
     const removeTaskRow = (index) => {
-        setTasks(tasks.filter((_, i) => i !== index));
-    };
-
-    const handleTaskChange = (index, field, value) => {
-        const updatedTasks = [...tasks];
-        updatedTasks[index][field] = value;
-        setTasks(updatedTasks);
+        if (tasks.length > 1) {
+            setTasks(tasks.filter((_, i) => i !== index));
+        }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-
         try {
-            const taskData = {
-                ...formData,
-                taskcreator: user?.email,
-                email: user?.email,
-                noOfExpectedResponse: formData.assignedTo.length,
-                responseRecieved: 0,
-                taskStatus: 'Pending'
-            };
-
-            const response = await axios.post('https://tsm-2d9v.onrender.com/tasks', taskData);
-            if (response.data.success) {
-                alert('Task created successfully');
-                setFormData({
-
-                    date: '',
-                    taskdescription: '',
-                    taskName: '',
-                    dueDate: '',
-                    assignedTo: [],
-                    dept: '',
-                    taskStatus: 'Pending'
-                });
-                navigate('/admin');
-            }
-        } catch (error) {
-            setError('Failed to create task');
-            console.error('Task creation error:', error);
+            // Create array of formatted task data
+            const tasksData = tasks.map(task => ({
+                taskid: task.taskId,
+                taskname: task.taskName,
+                taskdescription: task.taskDescription,
+                dept: task.dept,
+                assignto: task.assignTo,
+                assignee: task.assigneeEmails,
+                taskstatus: 'pending',
+                dueDate: task.dueDate,
+                taskcreator: task.taskcreator
+            }));
+    
+            // Send the array of tasks in a single request
+            await axios.post('https://tsm-2d9v.onrender.com/tasks', tasksData);
+            
+            alert('Tasks created successfully!');
+            setTasks([{
+                taskId: generateTaskId(),
+                taskName: '',
+                taskDescription: '',
+                dept: '',
+                assignTo: [],
+                assigneeEmails: [],
+                dueDate: '',
+                taskcreator: userData.email
+            }]);
+        } catch (err) {
+            setError('Failed to create tasks');
+            console.error('Error:', err);
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <form id="taskForm" onSubmit={handleSubmit} className="w-full p-6">
-            <div className="p-6">
-                <table id="taskTable" className="w-full border-collapse border border-gray-300">
-                    <thead>
-                        <tr className="bg-gray-200 text-gray-700">
-                            <th className="border p-2">Date</th>
-                            <th className="border p-2">Task Name</th>
-                            <th className="border p-2">Task Description</th>
-                            <th className="border p-2">Assigned To</th>
-                            <th className="border p-2">Status</th>
-                            <th className="border p-2">Actions</th>
+        <form onSubmit={handleSubmit} className="p-6">
+            <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-blue-600">
+                    <tr className="font-montserrat">
+                        <th className="px-6 border  py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Task ID</th>
+                        <th className="px-6 border  py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Task Name</th>
+                        <th className="px-6 border  py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Description</th>
+                        <th className="px-6 border  py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Department</th>
+                        <th className="px-6 border  py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Assign To</th>
+                        <th className="px-6 border  py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Due Date</th>
+                        <th className="px-6 border  py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Actions</th>
+                    </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                    {tasks.map((task, index) => (
+                        <tr key={task.taskId}>
+                            <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-900">
+                                {task.taskId}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                                <input
+                                    type="text"
+                                    value={task.taskName}
+                                    onChange={(e) => {
+                                        const updatedTasks = [...tasks];
+                                        updatedTasks[index].taskName = e.target.value;
+                                        setTasks(updatedTasks);
+                                    }}
+                                    className="mt-1 font-montserrat pl-[5px] h-[50px] border block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                                />
+                            </td>
+                            <td className="px-5 py-4  whitespace-nowrap">
+                                <textarea
+                                    value={task.taskDescription}
+                                    onChange={(e) => {
+                                        const updatedTasks = [...tasks];
+                                        updatedTasks[index].taskDescription = e.target.value;
+                                        setTasks(updatedTasks);
+                                    }}
+                                    className="mt-1 font-monotserrat pl-[5px] block border w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                                    rows="3"
+                                />
+                            </td>
+                            <td className="px-2 py-4 whitespace-nowrap">
+                                <select
+                                    value={task.dept}
+                                    onChange={(e) => handleDepartmentChange(e, index)}
+                                    className="mt-1 block border w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                                >
+                                    <option value="">Select Department</option>
+                                    {departments.map(dept => (
+                                        <option key={dept} value={dept}>{dept}</option>
+                                    ))}
+                                </select>
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                                <select
+                                    multiple
+                                    value={task.assigneeEmails}
+                                    onChange={(e) => handleAssigneeChange(e, index)}
+                                    className="mt-1 block border w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                                >
+                                    {deptUsers.map(user => (
+                                        <option 
+                                            key={user.email} 
+                                            value={user.email}
+                                            data-name={user.name}
+                                        >
+                                            {user.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </td>
+                            <td className="px-3 py-4 w-[120px] whitespace-nowrap">
+                                <input
+                                    type="datetime-local"
+                                    value={task.dueDate}
+                                    onChange={(e) => {
+                                        const updatedTasks = [...tasks];
+                                        updatedTasks[index].dueDate = e.target.value;
+                                        setTasks(updatedTasks);
+                                    }}
+                                    className="mt-1 block w-[200px] rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                                />
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <button
+                                    type="button"
+                                    onClick={() => removeTaskRow(index)}
+                                    className="text-red-600 hover:text-red-900 mr-2"
+                                >
+                                    Remove
+                                </button>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        {tasks.map((task, index) => (
-                            <tr key={index} className="border">
-                                <td className="border p-2">
-                                    <input 
-                                        type="date" 
-                                        className="w-full p-1 border rounded" 
-                                        value={task.date} 
-                                        onChange={(e) => handleTaskChange(index, 'date', e.target.value)}
-                                    />
-                                </td>
-                                <td className="border p-2">
-                                    <input 
-                                        type="text" 
-                                        className="w-full p-1 border rounded" 
-                                        value={task.taskName} 
-                                        onChange={(e) => handleTaskChange(index, 'taskName', e.target.value)}
-                                    />
-                                </td>
-                                <td className="border p-2">
-                                    <textarea 
-                                        className="w-full p-1 border rounded" 
-                                        value={task.taskdescription} 
-                                        onChange={(e) => handleTaskChange(index, 'taskdescription', e.target.value)}
-                                    ></textarea>
-                                </td>
-                                <td className="border p-2">
-                                    <select 
-                                        className="w-full p-1 border rounded"
-                                        value={task.assignedTo} 
-                                        onChange={(e) => handleTaskChange(index, 'assignedTo', e.target.value)}
-                                    >
-                                        <option value="">Select</option>
-                                        {teamMembers.map(email => (
-                                            <option key={email} value={email}>{email}</option>
-                                        ))}
-                                    </select>
-                                </td>
-                                <td className="border p-2">
-                                    <select 
-                                        className={`w-full p-1 border rounded ${task.taskStatus === 'Pending' ? 'bg-yellow-300' : 'bg-green-300'}`}
-                                        value={task.taskStatus} 
-                                        onChange={(e) => handleTaskChange(index, 'taskStatus', e.target.value)}
-                                    >
-                                        <option value="Pending">Pending</option>
-                                        <option value="Completed">Completed</option>
-                                    </select>
-                                </td>
-                                <td className="border p-2 text-center">
-                                    <button 
-                                        type="button"
-                                        onClick={() => removeTaskRow(index)} 
-                                        className="text-red-500 hover:text-red-700"
-                                    >
-                                        Remove
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+                    ))}
+                </tbody>
+            </table>
 
-                <div className="mt-4">
-                    <button 
-                        type="button"
-                        onClick={addTaskRow} 
-                        className="bg-blue-500 text-white px-4 py-2 rounded"
-                    >
-                        Add Task Row
-                    </button>
-                </div>
-
-                {error && <p className="text-red-500 mt-2">{error}</p>}
-            </div>
-
-            <div className="flex justify-center mt-6">
+            <div className="mt-4 flex justify-between">
+                <button
+                    type="button"
+                    onClick={addTaskRow}
+                    className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700"
+                >
+                    Add Row
+                </button>
                 <button
                     type="submit"
                     disabled={loading}
-                    className={`w-[250px] mt-[15px] py-2 px-4 text-white rounded-md ${
-                        loading ? 'bg-blue-300 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
-                    }`}
+                    className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700"
                 >
-                    {loading ? 'Creating Task...' : 'Create Task'}
+                    {loading ? 'Creating...' : 'Create Tasks'}
                 </button>
             </div>
+            {error && (
+                <div className="mt-4 text-red-600">
+                    {error}
+                </div>
+            )}
         </form>
-
     );
 }
 
 export default TaskForm;
-
-
-
-

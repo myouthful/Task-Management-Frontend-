@@ -74,45 +74,45 @@ export default function HistoryTable() {
 
   return (
     <ThemeProvider theme={theme}>
-    <TableContainer component={Paper} className="overflow-x-auto">
-      <Table sx={{ minWidth: 800 }} aria-label="task history table">
-        <TableHead>
-          <TableRow sx={{ backgroundColor: '#2563eb' }}>
-            <TableCell sx={{ color: 'white' }}>Task ID</TableCell>
-            <TableCell sx={{ color: 'white' }}>Description</TableCell>
-            <TableCell sx={{ color: 'white' }}>Type</TableCell>
-            <TableCell sx={{ color: 'white' }}>Status</TableCell>
-            <TableCell sx={{ color: 'white', minWidth: '100px' }}>Due Date</TableCell>
-            <TableCell sx={{ color: 'white' }}>Department</TableCell>
-            <TableCell sx={{ color: 'white' }}>Task Creator</TableCell>
-            <TableCell sx={{ color: 'white' }}>Assigned To</TableCell>
-            <TableCell sx={{ color: 'white' }}>Submitted By</TableCell>
-            <TableCell sx={{ color: 'white' }}>Not Submitted</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {tasks.map((task) => (
-            <TableRow
-              key={task.taskId}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell sx={{ color: '#2563eb' }}>{task.taskId}</TableCell>
-              <TableCell>{task.taskdescription}</TableCell>
-              <TableCell>{task.taskType}</TableCell>
-              <TableCell>
-                <StatusIndicator dueDate={task.dueDate} />
-              </TableCell>
-              <TableCell sx={{ minWidth: '100px', color: '#ff6b6b' }}>
-              {new Date(task.dueDate).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric'
-  })}
+      <TableContainer component={Paper} className="overflow-x-auto">
+        <Table sx={{ minWidth: 800 }} aria-label="task history table">
+          <TableHead>
+            <TableRow sx={{ backgroundColor: '#2563eb' }}>
+              <TableCell sx={{ color: 'white' }}>Task ID</TableCell>
+              <TableCell sx={{ color: 'white' }}>Task Name</TableCell>
+              <TableCell sx={{ color: 'white' }}>Description</TableCell>
+              <TableCell sx={{ color: 'white' }}>Status</TableCell>
+              <TableCell sx={{ color: 'white', minWidth: '100px' }}>Due Date</TableCell>
+              <TableCell sx={{ color: 'white' }}>Department</TableCell>
+              <TableCell sx={{ color: 'white' }}>Task Creator</TableCell>
+              <TableCell sx={{ color: 'white' }}>Assigned To</TableCell>
+              <TableCell sx={{ color: 'white' }}>Submitted By</TableCell>
+              <TableCell sx={{ color: 'white' }}>Not Submitted</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {tasks.map((task) => (
+              <TableRow
+                key={task.taskId}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell sx={{ color: '#2563eb' }}>{task.taskId}</TableCell>
+                <TableCell>{task.taskName}</TableCell>
+                <TableCell>{task.taskdescription}</TableCell>
+                <TableCell>
+                  <StatusIndicator dueDate={task.dueDate} />
+                </TableCell>
+                <TableCell sx={{ minWidth: '100px', color: '#ff6b6b' }}>
+                  {new Date(task.dueDate).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                  })}
                 </TableCell>
                 <TableCell>{task.dept}</TableCell>
                 <TableCell>{task.taskcreator}</TableCell>
                 <TableCell sx={{ minWidth: '200px' }}>
-                  {renderList(task.assignedTo)}
+                  {renderList(task.assignedNames)}
                 </TableCell>
                 <TableCell sx={{ minWidth: '200px' }}>
                   {renderList(task.userswhosubmitted)}
@@ -120,7 +120,6 @@ export default function HistoryTable() {
                 <TableCell sx={{ minWidth: '200px' }}>
                   {renderList(task.nosubmits)}
                 </TableCell>
-                
               </TableRow>
             ))}
           </TableBody>
