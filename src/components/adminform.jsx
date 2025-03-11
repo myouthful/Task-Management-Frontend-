@@ -15,7 +15,7 @@ function AdminForm() {
 
     const fetchRecentSignups = async () => {
         try {
-            const response = await axios.get('http://localhost:3000/recentsignup');
+            const response = await axios.get('https://tsm-2d9v.onrender.com/recentsignup');
             setUsers(response.data.users);
         } catch (err) {
             setError('Failed to fetch recent signups');
