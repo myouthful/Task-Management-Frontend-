@@ -32,9 +32,9 @@ function AdminForm() {
         setLoading(true);
         try {
             const response = await axios.post('https://tsm-2d9v.onrender.com/assignroles', {
-                email,
+               "email": email,
                 role: role.toLowerCase(),
-                dept
+                "department":dept
             });
 
             if (response.data.success) {
