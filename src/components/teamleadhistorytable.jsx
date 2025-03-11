@@ -10,21 +10,22 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
 const theme = createTheme({
-  typography: {
-    fontFamily: 'Montserrat, sans-serif',
-  },
-  components: {
-    MuiTableCell: {
-      styleOverrides: {
-        root: {
-          fontFamily: 'Montserrat, sans-serif',
+    typography: {
+      fontFamily: 'Montserrat, sans-serif',
+    },
+    components: {
+      MuiTableCell: {
+        styleOverrides: {
+          root: {
+            fontFamily: 'Montserrat, sans-serif',
+          }
         }
       }
     }
-  }
-});
+  });
 
-export default function HistoryTable() {
+
+export default function TeamLeadHistoryTable() {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -47,7 +48,7 @@ export default function HistoryTable() {
     fetchTaskUpdates();
   }, []);
 
-  if (loading) return <div className='w-full px-[85px]'>Loading task history...</div>;
+  if (loading) return <div className='w-full px-[85px] font-montserrat mb-[25px]'>Loading task history...</div>;
   if (error) return <div>{error}</div>;
 
   const renderList = (items) => (
@@ -60,18 +61,17 @@ export default function HistoryTable() {
     </ul>
   );
 
-  return (
+   return (
     <ThemeProvider theme={theme}>
       <TableContainer component={Paper} className="overflow-x-auto">
         <Table sx={{ minWidth: 800 }} aria-label="task history table">
           <TableHead>
             <TableRow>
-              <TableCell sx={{color: '#2563eb'}} >Task ID</TableCell>
+              <TableCell sx={{color: '#2563eb'}}>Task ID</TableCell>
               <TableCell>Description</TableCell>
               <TableCell>Type</TableCell>
-              <TableCell sx={{ minWidth: '180px',color: '#ff6b6b' }}>Due Date</TableCell>
-              <TableCell>Department</TableCell>
-              <TableCell>Task Creator</TableCell>
+              <TableCell sx={{ minWidth: '180px',color:'#ff6b6b'  }}>Due Date</TableCell>
+              <TableCell>Dept</TableCell>
               <TableCell>Assigned To</TableCell>
               <TableCell>Submitted By</TableCell>
               <TableCell>Not Submitted</TableCell>
@@ -86,7 +86,7 @@ export default function HistoryTable() {
                 <TableCell sx={{ color: '#2563eb' }}>{task.taskId}</TableCell>
                 <TableCell>{task.taskdescription}</TableCell>
                 <TableCell>{task.taskType}</TableCell>
-                <TableCell sx={{ minWidth: '180px', color: '#ff6b6b'  }}>
+                <TableCell sx={{ minWidth: '180px', color: '#ff6b6b' }}>
                   {new Date(task.dueDate).toLocaleDateString('en-US', {
                     year: 'numeric',
                     month: 'short',
@@ -96,7 +96,6 @@ export default function HistoryTable() {
                   })}
                 </TableCell>
                 <TableCell>{task.dept}</TableCell>
-                <TableCell>{task.taskcreator}</TableCell>
                 <TableCell sx={{ minWidth: '200px' }}>
                   {renderList(task.assignedTo)}
                 </TableCell>

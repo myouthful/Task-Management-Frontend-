@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import TaskForm from "../components/taskform";
 import HistoryTable from "../components/historytable";
+import TeamLeadHistoryTable from "../components/teamleadhistorytable";
 
 function StaffPage() {
     const [user, setUser] = useState(null);
@@ -33,7 +34,7 @@ function StaffPage() {
             <hr className="mt-[20px] " />
             <p className="px-[65px] mt-[30px] font-medium text-gray-900 text-[19px]">Task History</p>
             <div className="w-full mt-[35px] px-[45px] ">
-            <HistoryTable />
+            <TeamLeadHistoryTable />
             </div>
         </div>
     )
