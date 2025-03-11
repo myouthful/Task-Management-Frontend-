@@ -15,7 +15,11 @@ function AdminPage() {
             return;
         }
         setUser(JSON.parse(userData));
+<<<<<<< HEAD
     }, [navigate]);
+=======
+    }, []);
+>>>>>>> 3ff6ec5 ( updated TaskForm component user adjusted as well as icon changed)
 
     if (!user) {
         return <div>Loading...</div>;
@@ -24,14 +28,22 @@ function AdminPage() {
         <div className="flex-col flex  gap-5">
             <Header />
             <p className="w-full px-[75px] mt-[30px] font-medium text-gray-900 text-[19px]">
+<<<<<<< HEAD
                 Welcome, {user.firstname} {user.lastname}
+=======
+                Welcome, {user?.firstname} {user?.lastname}
+>>>>>>> 3ff6ec5 ( updated TaskForm component user adjusted as well as icon changed)
             </p>
             <hr className="mt-[20px] " />
             <p className="w-full px-[80px] mt-[5px] font-medium text-gray-900 text-[19px]">
                 Assign Role to User
             </p>
             <div className="px-[55px] ">
+<<<<<<< HEAD
                 <AdminForm />
+=======
+                <AdminForm user={user} />
+>>>>>>> 3ff6ec5 ( updated TaskForm component user adjusted as well as icon changed)
             </div>
             <hr className="mt-[20px] " />
             <p className="px-[65px] mt-[30px] font-medium text-gray-900 text-[19px]">Task History</p>
