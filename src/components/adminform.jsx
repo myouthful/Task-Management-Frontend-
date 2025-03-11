@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { useState } from 'react';
 import axios from 'axios';
 
@@ -6,15 +5,6 @@ function AdminForm() {
     const [formData, setFormData] = useState({
         role: '',
         email: '',
-=======
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-
-function AdminForm({ user }) {
-    const [formData, setFormData] = useState({
-        role: '',
-        name: user ? `${user.firstname} ${user.lastname}` : '',
->>>>>>> 3ff6ec5 ( updated TaskForm component user adjusted as well as icon changed)
         dept: ''
     });
     const [loading, setLoading] = useState(false);
@@ -23,16 +13,6 @@ function AdminForm({ user }) {
     const roles = ['intern', 'staff'];
     const departments = ['AOF', 'PDE', 'IDP'];
 
-<<<<<<< HEAD
-=======
-    // Update name field when user changes
-    useEffect(() => {
-        if (user) {
-            setFormData(prev => ({ ...prev, name: `${user.firstname} ${user.lastname}` }));
-        }
-    }, [user]);
-
->>>>>>> 3ff6ec5 ( updated TaskForm component user adjusted as well as icon changed)
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({
@@ -51,19 +31,11 @@ function AdminForm({ user }) {
             
             if (response.data.success) {
                 alert('Role and department assigned successfully');
-<<<<<<< HEAD
                 setFormData({
                     role: '',
                     email: '',
                     dept: ''
                 });
-=======
-                setFormData(prev => ({
-                    ...prev,
-                    role: '',
-                    dept: '' // Only reset role and department
-                }));
->>>>>>> 3ff6ec5 ( updated TaskForm component user adjusted as well as icon changed)
             }
         } catch (err) {
             setError('Failed to assign role. Please try again.');
@@ -76,21 +48,6 @@ function AdminForm({ user }) {
     return (
         <form onSubmit={handleSubmit} className="w-full max-w-md p-6">
             <div className="space-y-4">
-<<<<<<< HEAD
-=======
-            <div className="flex flex-col">
-                    <label className="text-sm font-medium text-gray-700">Name:</label>
-                    <input
-                        type="text"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        required
-                        disabled
-                        className="mt-1 p-2 border rounded-md px-[9px] w-[300px]"
-                    />
-                </div>
->>>>>>> 3ff6ec5 ( updated TaskForm component user adjusted as well as icon changed)
                 <div className="flex flex-col">
                     <label className="text-sm font-medium text-gray-700">Role:</label>
                     <select
@@ -110,7 +67,6 @@ function AdminForm({ user }) {
                 </div>
 
                 <div className="flex flex-col">
-<<<<<<< HEAD
                     <label className="text-sm font-medium text-gray-700">Email:</label>
                     <input
                         type="email"
@@ -123,8 +79,6 @@ function AdminForm({ user }) {
                 </div>
 
                 <div className="flex flex-col">
-=======
->>>>>>> 3ff6ec5 ( updated TaskForm component user adjusted as well as icon changed)
                     <label className="text-sm font-medium text-gray-700">Department:</label>
                     <select
                         name="dept"
