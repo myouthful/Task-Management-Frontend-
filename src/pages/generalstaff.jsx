@@ -27,7 +27,6 @@ function GeneralStaffPage() {
 
                 <p className="font-montserrat font-medium text-gray-900 text-[19px]">Welcome,</p>
                  <p className="font-montserrat font-semibold text-gray-900 text-[22px]">{user?.firstname} {user?.lastname}</p>
-
             </div>
             <hr className="mt-[20px] " />
             <p className="px-[65px] mt-[30px] font-medium text-gray-900 text-[19px]">Task History</p>
