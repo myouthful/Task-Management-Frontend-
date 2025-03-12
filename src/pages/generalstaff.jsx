@@ -1,10 +1,9 @@
 import Header from "../components/Header"
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import TaskForm from "../components/taskform";
 import TeamLeadHistoryTable from "../components/teamleadhistorytable";
 
-function StaffPage() {
+function GeneralStaffPage() {
     const [user, setUser] = useState(null);
     const navigate = useNavigate();
 
@@ -31,11 +30,6 @@ function StaffPage() {
 
             </div>
             <hr className="mt-[20px] " />
-            <p className="w-full font-montserrat pl-[40px] mt-[15px] font-medium text-gray-700 text-[17px]">
-                Create Task
-            </p>
-            <TaskForm />
-            <hr className="mt-[20px] " />
             <p className="px-[65px] mt-[30px] font-medium text-gray-900 text-[19px]">Task History</p>
             <div className="w-full mt-[35px] px-[45px] ">
             <TeamLeadHistoryTable />
@@ -44,4 +38,4 @@ function StaffPage() {
     )
 }
 
-export default StaffPage;
+export default GeneralStaffPage;

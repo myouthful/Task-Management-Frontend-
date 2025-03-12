@@ -40,11 +40,14 @@ function Login() {
             navigate('/intern');
             break;
           case 'staff':
-            navigate('/staff');
+            navigate('/generalstaff');
             break;
           case 'admin':
             navigate('/admin');
             break;
+            case 'team lead':
+              navigate('/staff');
+              break;
           default:
             setMessage('Invalid user role');
         }

@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
+
+
 function AdminForm() {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -34,7 +36,7 @@ function AdminForm() {
             const response = await axios.post('https://tsm-2d9v.onrender.com/assignroles', {
                "email": email,
                 role: role.toLowerCase(),
-                "department":dept
+                "dept":dept
             });
 
             if (response.data.success) {
