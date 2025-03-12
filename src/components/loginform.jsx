@@ -45,8 +45,8 @@ function Login() {
           case 'admin':
             navigate('/admin');
             break;
-            case 'team lead':
-              navigate('/staff');
+          case 'team lead':
+              navigate('/teamlead');
               break;
           default:
             setMessage('Invalid user role');

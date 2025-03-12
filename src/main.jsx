@@ -19,8 +19,8 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="/login" element={<LoginPage />} />
         <Route path="/intern" element={<InterPage />} />
         <Route path="/admin" element={<AdminPage />} />
-        <Route path="/staff" element={<StaffPage />} />
-        <Route path="/generalstaff" element={<GeneralStaffPage />} />
+        <Route path="/staff" element={<GeneralStaffPage />} />
+        <Route path="/teamlead" element={<StaffPage />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>);
